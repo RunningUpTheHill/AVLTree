@@ -1,6 +1,6 @@
-#include "../src/main.cpp"
 #define CATCH_CONFIG_MAIN
-#include "catch.hpp"
+#include <catch2/catch_test_macros.hpp>
+#include "../src/AVLTree.h"
 
 /*
 	To check output (At the Project1 directory):
