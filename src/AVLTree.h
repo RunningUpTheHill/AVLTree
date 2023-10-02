@@ -4,6 +4,7 @@
 #include <string>
 #include <vector>
 #include <utility>
+#include <regex>
 using namespace std;
 
 class AVLTree {
@@ -13,12 +14,16 @@ private:
         string name;
         string ID;
         int height;
-        Student* parent;
         Student* left;
         Student* right;
-        Student(string _name, string data) : name(std::move(_name)), ID(std::move(data)), height(1), parent(nullptr), left(nullptr), right(nullptr) {}
+        Student(string _name, string data) : name(std::move(_name)), ID(std::move(data)), height(1), left(nullptr), right(nullptr) {}
     };
     Student* rootNode = nullptr;
+
+    // creates a regex object that checks for characters beginning to end containing A-Z, a-z, and spaces
+    regex valid_name = regex("^[A-Za-z\\s]+$");
+    // creates a regex object that checks for numbers 0-9 that has a length of 8
+    regex valid_id = regex("^[0-9]{8}$");
 
     // functions to balance the tree
     static int getBalanceFactor(Student* root);
@@ -41,17 +46,18 @@ private:
     string removeInorderHelper(Student* root, int n);
 
 public:
+    // vector of valid commands that calls the public functions
     vector<string> validMethods {"insert", "remove", "search", "printInorder", "printPreorder", "printPostorder", "printLevelCount", "removeInorder"};
     // public methods to be used by the client in main interface
-    void insert(const string& _name, const string& gatorID);
-    void remove(const string& gatorID);
-    void searchID(const string& gatorID);
-    void searchName(const string& _name);
-    void printInorder();
-    void printPreorder();
-    void printPostorder();
-    void printLevelCount();
-    void removeInorder(int n);
+    string insert(const string& _name, const string& gatorID, const string& method);
+    string remove(const string& gatorID, const string& method);
+    string searchID(const string& gatorID, const string& method);
+    string searchName(const string& _name, const string& method);
+    string printInorder();
+    string printPreorder();
+    string printPostorder();
+    int printLevelCount();
+    string removeInorder(int n, const string& method);
 };
 
 

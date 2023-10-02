@@ -1,16 +1,10 @@
 #include "AVLTree.h"
 #include <regex>
 
-/* Note: 
-	1. You will have to comment main() when unit testing your code because catch uses its own main().
-	2. You will submit this main.cpp file and any header files you have on Gradescope. 
-*/
-
 int main(){
     AVLTree tree;
+    // creates a regex object that checks for spaces
     regex space = regex("\\s");
-    regex name = regex("^[A-Za-z\\s]+$");
-    regex id = regex("^[0-9]{8}$");
 
     string count;
     getline(cin, count);
@@ -27,6 +21,7 @@ int main(){
 
         auto it = find(tree.validMethods.begin(), tree.validMethods.end(), command);
 
+        // check if the command is spelled correctly or matches one of the valid commands in vector
         if (it == tree.validMethods.end()) {
             cout << "unsuccessful" << endl;
             continue;
@@ -37,68 +32,46 @@ int main(){
                 getline(s, NAME, '"');
                 getline(s, ID);
                 ID = regex_replace(ID, space, "");
-                if (!regex_match(NAME, name) || !regex_match(ID, id)) {
-                    cout << "unsuccessful" << endl;
-                    continue;
-                }
-                else {
-                    tree.insert(NAME, ID);
-                }
+                cout << tree.insert(NAME, ID, "insert") << endl;
             }
             else if (command == "remove") {
                 getline(s, ID);
                 ID = regex_replace(ID, space, "");
-                if (!regex_match(ID, id)) {
-                    cout << "unsuccessful" << endl;
-                    continue;
-                }
-                else {
-                    tree.remove(ID);
-                }
+                cout << tree.remove(ID, "remove") << endl;
             }
             else if (command == "search") {
+                // check if the original user input contained the " delimiter
+
+                //if no " delimiter, searching for ID
                 if (find(line.begin(), line.end(), '"') == line.end()) {
                     s >> ID;
-                    if (!regex_match(ID, id)) {
-                        cout << "unsuccessful" << endl;
-                        continue;
-                    }
-                    else {
-                        tree.searchID(ID);
-                    }
+                    cout << tree.searchID(ID, "search") << endl;
                 }
+                // " delimiter is found, search for name
                 else {
                     getline(s, command, '"');
                     getline(s, NAME, '"');
-                    if (!regex_match(NAME, name)) {
-                        cout << "unsuccessful" << endl;
-                        continue;
-                    }
-                    else {
-                        tree.searchName(NAME);
-                    }
+                    cout << tree.searchName(NAME, "search");
                 }
             }
             else if (command == "removeInorder") {
                 string N;
                 s >> N;
-                tree.removeInorder(stoi(N));
+                cout << tree.removeInorder(stoi(N), "removeInorder") << endl;
             }
             else if (command == "printInorder") {
-                tree.printInorder();
+                cout << tree.printInorder() << endl;
             }
             else if (command == "printPreorder") {
-                tree.printPreorder();
+                cout << tree.printPreorder() << endl;
             }
             else if (command == "printPostorder") {
-                tree.printPostorder();
+                cout << tree.printPostorder() << endl;
             }
             else {
-                tree.printLevelCount();
+                cout << tree.printLevelCount() << endl;
             }
         }
     }
-
 	return 0;
 }
-
